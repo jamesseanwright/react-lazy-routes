@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default () => (
+export const Page = () => (
   <section>
     <h2>Lorem</h2>
 

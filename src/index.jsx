@@ -1,16 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react';
+import ReactDOM from 'react-dom';
 
-const RouterContext = React.createContext({
-  href: '',
-  to: () => undefined,
-});
+const RouterContext = React.createContext(
+  () => undefined,
+);
 
 const routes = new Map([
-  ['/bacon', import('./pages/Bacon.jsx')],
-  ['/hipster', import('./pages/Hipster.jsx')],
-  ['/lorem', import('./pages/Lorem.jsx')],
-  ['/trump', import('./pages/Trump.jsx')],
+  ['/bacon', () => import('./pages/Bacon.jsx')],
+  ['/hipster', () => import('./pages/Hipster.jsx')],
+  ['/lorem', () => import('./pages/Lorem.jsx')],
+  ['/trump', () => import('./pages/Trump.jsx')],
 ]);
 
 const defaultRouterState = {
@@ -21,8 +20,8 @@ const defaultRouterState = {
 // TODO: history API
 const withRoutes = routes =>
   Component =>
-    ({ children, ...rest }) => {
-      const [{ isLoading, Page }, setState] = useState(defaultRouterState);
+    props => {
+      const [state, setState] = React.useState(defaultRouterState);
 
       // TODO: define outside of function
       const to = async destHref => {
@@ -32,7 +31,7 @@ const withRoutes = routes =>
 
         //TODO: error handling for missing route
         const loadPage = routes.get(destHref);
-        const Page = await loadPage();
+        const { Page } = await loadPage();
 
         setState({
           isLoading: false,
@@ -40,16 +39,16 @@ const withRoutes = routes =>
         });
       };
 
-      <RouterContext.Provider value={{ href, to }}>
-        <Component {...rest}>
-          {children({ isLoading, Page })}
-        </Component>
-      </RouterContext.Provider>
+      return (
+        <RouterContext.Provider value={to}>
+          <Component {...props} {...state} />
+        </RouterContext.Provider>
+      );
     };
 
-const Link = ({ children, href, ...rest }) => (
+const Link = ({ href, ...rest }) => (
   <RouterContext.Consumer>
-    {({ href, to }) =>
+    {to =>
       <a
         {...rest}
         href={href}
@@ -57,9 +56,7 @@ const Link = ({ children, href, ...rest }) => (
           e.preventDefault();
           to(href);
         }}
-      >
-        {children}
-      </a>
+      />
     }
   </RouterContext.Consumer>
 );
