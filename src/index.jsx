@@ -18,6 +18,7 @@ const defaultRouterState = {
 };
 
 // TODO: history API
+// TODO: React.Lazy version!
 const withRoutes = routes =>
   Component =>
     props => {
