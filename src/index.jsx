@@ -7,10 +7,10 @@ const RouterContext = React.createContext({
 });
 
 const routes = new Map([
-  ['/bacon', import('pages/Bacon')],
-  ['/hipster', import('pages/Hipster')],
-  ['/lorem', import('pages/Lorem')],
-  ['/trump', import('pages/Trump')],
+  ['/bacon', import('./pages/Bacon.jsx')],
+  ['/hipster', import('./pages/Hipster.jsx')],
+  ['/lorem', import('./pages/Lorem.jsx')],
+  ['/trump', import('./pages/Trump.jsx')],
 ]);
 
 const defaultRouterState = {

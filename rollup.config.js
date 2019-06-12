@@ -7,7 +7,7 @@ import babel from 'rollup-plugin-babel';
 export default ({ inlineDynamicImports }) => ({
   input: 'src/index.jsx',
   output: {
-    file: 'dist/index.js',
+    dir: 'dist',
     format: 'esm',
   },
   inlineDynamicImports,
