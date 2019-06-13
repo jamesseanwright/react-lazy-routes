@@ -53,8 +53,17 @@ const Link = ({ href, ...rest }) => (
 
 const App = ({ Page, ...rest }) => (
   <>
+    {/* TODO: abstract nav into component */}
     <nav>
-      <Link href="/trump">Trump</Link>
+      <ul>
+        {[...routes.keys()].map((path, i) => (
+          <li key={i}>
+            <Link href={path}>
+              {`${path[1].toUpperCase()}${path.slice(2)}`}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </nav>
     {/* TODO: abstract React.Suspense?! */}
     <React.Suspense fallback={<p>Loading!</p>}>
