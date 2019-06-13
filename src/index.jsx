@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-const RouterContext = React.createContext(
-  () => undefined,
-);
+import Nav from './Nav.jsx';
+import { withRoutes } from './routing/index.jsx'; // TODO: configure node-resolve
 
 const routes = new Map([
   ['/bacon', React.lazy(() => import('./pages/Bacon.jsx'))],
@@ -12,59 +10,11 @@ const routes = new Map([
   ['/trump', React.lazy(() => import('./pages/Trump.jsx'))],
 ]);
 
-const defaultRouterState = {
-  Page: () => <p>Pick a route</p>,
-};
-
-// TODO: history API
-// TODO: React.Lazy version!
-const withRoutes = routes =>
-  Component =>
-    props => {
-      const [state, setState] = React.useState(defaultRouterState);
-      // TODO: define outside of function
-      const to = async destHref => {
-        //TODO: error handling for missing route
-        const Page = routes.get(destHref);
-        setState({ Page });
-      };
-
-      return (
-        <RouterContext.Provider value={to}>
-          <Component {...props} {...state} />
-        </RouterContext.Provider>
-      );
-    };
-
-const Link = ({ href, ...rest }) => (
-  <RouterContext.Consumer>
-    {to =>
-      <a
-        {...rest}
-        href={href}
-        onClick={e => {
-          e.preventDefault();
-          to(href);
-        }}
-      />
-    }
-  </RouterContext.Consumer>
-);
+const paths = [...routes.keys()];
 
 const App = ({ Page, ...rest }) => (
   <>
-    {/* TODO: abstract nav into component */}
-    <nav>
-      <ul>
-        {[...routes.keys()].map((path, i) => (
-          <li key={i}>
-            <Link href={path}>
-              {`${path[1].toUpperCase()}${path.slice(2)}`}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <Nav paths={paths} />
     {/* TODO: abstract React.Suspense?! */}
     <React.Suspense fallback={<p>Loading!</p>}>
       <Page {...rest} />
