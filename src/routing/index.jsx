@@ -24,8 +24,8 @@ const createTo = (routes, setState) =>
 
 // TODO: history API
 export const withRoutes = routes =>
-  Component => {
-    return props => {
+  Component =>
+    props => {
       const [state, setState] = React.useState(defaultRouterState);
       const to = createTo(routes, setState);
 
@@ -35,7 +35,6 @@ export const withRoutes = routes =>
         </RouterContext.Provider>
       );
     };
-  };
 
 export const Link = ({ href, ...rest }) => (
   <RouterContext.Consumer>
