@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Nav from './Nav.jsx';
-import { withRoutes } from './routing/index.jsx'; // TODO: configure node-resolve
+import { PageHost } from './routing/index.jsx'; // TODO: configure node-resolve
 
 const routes = new Map([
   ['/bacon', React.lazy(() => import('./pages/Bacon.jsx'))],
@@ -10,21 +10,25 @@ const routes = new Map([
   ['/trump', React.lazy(() => import('./pages/Trump.jsx'))],
 ]);
 
-const paths = [...routes.keys()];
+const paths = [...routes.keys(), '/missing'];
 
-const App = ({ Page, ...rest }) => (
-  <>
-    <Nav paths={paths} />
-    {/* TODO: abstract React.Suspense?! */}
-    <React.Suspense fallback={<p>Loading!</p>}>
-      <Page {...rest} />
-    </React.Suspense>
-  </>
+const App = () => (
+  <PageHost
+    routes={routes}
+    initial={<p>Pick a route!</p>}
+    loading={<p>Loading...</p>}
+    notFound={<p>Route not found</p>}
+  >
+    {Page => (
+      <>
+        <Nav paths={paths} />
+        <Page />
+      </>
+    )}
+  </PageHost>
 );
 
-const RouteAwareApp = withRoutes(routes)(App);
-
 ReactDOM.render(
-  <RouteAwareApp />,
+  <App />,
   document.body.querySelector('#app'),
 );

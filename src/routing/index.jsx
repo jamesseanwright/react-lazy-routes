@@ -1,52 +1,41 @@
 import React from 'react';
 
-const RouterContext = React.createContext(
-  () => undefined,
-);
+const RouterContext = React.createContext();
 
-const defaultRouterState = {
-  Page: () => <p>Pick a route</p>,
-};
-
-const createTo = (routes, setState) =>
-  /* Memoised so we can avoid allocating
-   * new func references on each render
-   * TODO: profile before & after memo */
-  React.useMemo(
-    () => async destHref => {
-      /* TODO: error handling for missing
-       * route (pass NotFound comp prop?) */
-      const Page = routes.get(destHref);
-      setState({ Page });
-    },
-    setState,
-  );
+// TODO: React.useMemo?
+const createTo = (routes, setPage, { notFound }) =>
+  destHref => {
+    setPage(() => routes.has(destHref)
+      ? routes.get(destHref)
+      : () => notFound
+    );
+  };
 
 // TODO: history API
-export const withRoutes = routes =>
-  Component =>
-    props => {
-      const [state, setState] = React.useState(defaultRouterState);
-      const to = createTo(routes, setState);
+export const PageHost = props => {
+  const [Page, setPage] = React.useState(() => () => props.initial);
+  const to = createTo(props.routes, setPage, props);
 
-      return (
-        <RouterContext.Provider value={to}>
-          <Component {...props} {...state} />
-        </RouterContext.Provider>
-      );
-    };
+  return (
+    <RouterContext.Provider value={to}>
+      <React.Suspense fallback={props.loading}>
+        {props.children(Page)}
+      </React.Suspense>
+    </RouterContext.Provider>
+  );
+};
 
-export const Link = ({ href, ...rest }) => (
-  <RouterContext.Consumer>
-    {to =>
-      <a
-        {...rest}
-        href={href}
-        onClick={e => {
-          e.preventDefault();
-          to(href);
-        }}
-      />
-    }
-  </RouterContext.Consumer>
-);
+export const Link = ({ href, ...rest }) => {
+  const to = React.useContext(RouterContext);
+
+  return (
+    <a
+      {...rest}
+      href={href}
+      onClick={e => {
+        e.preventDefault();
+        to(href);
+      }}
+    />
+  );
+};
