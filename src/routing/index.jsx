@@ -5,13 +5,16 @@ const RouterContext = React.createContext();
 // TODO: React.useMemo?
 const createTo = (routes, setPage, { notFound }) =>
   destHref => {
+    // TODO: injectable history for tests
+    // TODO: popstate
+    history.pushState({}, null, destHref);
+
     setPage(() => routes.has(destHref)
       ? routes.get(destHref)
       : () => notFound
     );
   };
 
-// TODO: history API
 export const PageHost = props => {
   const [Page, setPage] = React.useState(() => () => props.initial);
   const to = createTo(props.routes, setPage, props);
