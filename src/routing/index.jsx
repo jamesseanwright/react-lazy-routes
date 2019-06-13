@@ -8,17 +8,25 @@ const defaultRouterState = {
   Page: () => <p>Pick a route</p>,
 };
 
+const createTo = (routes, setState) =>
+  /* Memoised so we can avoid allocating
+   * new func references on each render
+   * TODO: profile before & after memo */
+  React.useMemo(
+    () => async destHref => {
+      //TODO: error handling for missing route
+      const Page = routes.get(destHref);
+      setState({ Page });
+    },
+    setState,
+  );
+
 // TODO: history API
 export const withRoutes = routes =>
-  Component =>
-    props => {
+  Component => {
+    return props => {
       const [state, setState] = React.useState(defaultRouterState);
-      // TODO: define outside of function
-      const to = async destHref => {
-        //TODO: error handling for missing route
-        const Page = routes.get(destHref);
-        setState({ Page });
-      };
+      const to = createTo(routes, setState);
 
       return (
         <RouterContext.Provider value={to}>
@@ -26,6 +34,7 @@ export const withRoutes = routes =>
         </RouterContext.Provider>
       );
     };
+  };
 
 export const Link = ({ href, ...rest }) => (
   <RouterContext.Consumer>
