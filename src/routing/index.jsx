@@ -14,7 +14,8 @@ const createTo = (routes, setState) =>
    * TODO: profile before & after memo */
   React.useMemo(
     () => async destHref => {
-      //TODO: error handling for missing route
+      /* TODO: error handling for missing
+       * route (pass NotFound comp prop?) */
       const Page = routes.get(destHref);
       setState({ Page });
     },
