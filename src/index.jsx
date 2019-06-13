@@ -6,14 +6,13 @@ const RouterContext = React.createContext(
 );
 
 const routes = new Map([
-  ['/bacon', () => import('./pages/Bacon.jsx')],
-  ['/hipster', () => import('./pages/Hipster.jsx')],
-  ['/lorem', () => import('./pages/Lorem.jsx')],
-  ['/trump', () => import('./pages/Trump.jsx')],
+  ['/bacon', React.lazy(() => import('./pages/Bacon.jsx'))],
+  ['/hipster', React.lazy(() => import('./pages/Hipster.jsx'))],
+  ['/lorem', React.lazy(() => import('./pages/Lorem.jsx'))],
+  ['/trump', React.lazy(() => import('./pages/Trump.jsx'))],
 ]);
 
 const defaultRouterState = {
-  isLoading: true,
   Page: () => <p>Pick a route</p>,
 };
 
@@ -23,21 +22,11 @@ const withRoutes = routes =>
   Component =>
     props => {
       const [state, setState] = React.useState(defaultRouterState);
-
       // TODO: define outside of function
       const to = async destHref => {
-        setState({
-          isLoading: true,
-        });
-
         //TODO: error handling for missing route
-        const loadPage = routes.get(destHref);
-        const { Page } = await loadPage();
-
-        setState({
-          isLoading: false,
-          Page,
-        });
+        const Page = routes.get(destHref);
+        setState({ Page });
       };
 
       return (
@@ -62,12 +51,15 @@ const Link = ({ href, ...rest }) => (
   </RouterContext.Consumer>
 );
 
-const App = ({ isLoading, Page, ...rest }) => (
+const App = ({ Page, ...rest }) => (
   <>
     <nav>
       <Link href="/trump">Trump</Link>
     </nav>
-    {isLoading ? <p>Loading...</p> : <Page {...rest} />}
+    {/* TODO: abstract React.Suspense?! */}
+    <React.Suspense fallback={<p>Loading!</p>}>
+      <Page {...rest} />
+    </React.Suspense>
   </>
 );
 

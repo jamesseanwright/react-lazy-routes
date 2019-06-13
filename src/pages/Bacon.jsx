@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const Page = () => (
+export default () => (
   <section>
     <h2>Bacon</h2>
 
