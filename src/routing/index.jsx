@@ -2,21 +2,21 @@ import React from 'react';
 
 const RouterContext = React.createContext();
 
-const buildStateArgs = href =>
-  [{ href }, null, href];
+const buildStateArgs = path =>
+  [{ path }, null, path];
 
-const useHistory = (to, initialHref) => {
-  const push = href => {
-    to(href);
-    history.pushState(...buildStateArgs(href));
+const useHistory = (to, initialPath) => {
+  const push = path => {
+    to(path);
+    history.pushState(...buildStateArgs(path));
   };
 
   React.useEffect(() => {
     // Sets root entry on history stack
-    history.replaceState(...buildStateArgs(initialHref));
+    history.replaceState(...buildStateArgs(initialPath));
 
     const onPop = (({ state }) => {
-      to(state.href);
+      to(state.path);
     });
 
     window.addEventListener('popstate', onPop);
@@ -29,24 +29,23 @@ const useHistory = (to, initialHref) => {
   return push;
 };
 
-const getPage = (routes, href, notFound) =>
-  routes.has(href)
-    ? routes.get(href)
+const getPage = (routes, path, notFound) =>
+  routes.has(path)
+    ? routes.get(path)
     : () => notFound;
 
 // TODO: injectable history, window etc.
-const useRouting = ({ routes, initialHref, notFound }) => {
+const useRouting = ({ routes, initialPath, notFound }) => {
   const initialState = {
-    Page: getPage(routes, initialHref, notFound),
-    href: initialHref,
+    Page: getPage(routes, initialPath, notFound),
+    path: initialPath,
   };
 
   const [{ Page }, setState] = React.useState(initialState);
 
-  // TODO: React.useMemo?
-  const to = href => {
-    const Page = getPage(routes, href, notFound);
-    setState({ Page, href });
+  const to = path => {
+    const Page = getPage(routes, path, notFound);
+    setState({ Page, path });
   };
 
   return [Page, to];
@@ -54,7 +53,7 @@ const useRouting = ({ routes, initialHref, notFound }) => {
 
 export const PageHost = props => {
   const [Page, to] = useRouting(props);
-  const push = useHistory(to, props.initialHref);
+  const push = useHistory(to, props.initialPath);
 
   return (
     <RouterContext.Provider value={push}>

@@ -18,7 +18,7 @@ const paths = [...routes.keys(), '/missing'].slice(1);
 const App = () => (
   <PageHost
     routes={routes}
-    initialHref="/"
+    initialPath="/"
     loading={<p>Loading...</p>}
     notFound={<p>Route not found</p>}
   >
