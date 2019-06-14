@@ -2,8 +2,7 @@ import React from 'react';
 
 const RouterContext = React.createContext();
 
-const buildStateArgs = path =>
-  [{ path }, null, path];
+const buildStateArgs = path => [{ path }, null, path];
 
 const useHistory = (to, initialPath) => {
   const push = path => {
@@ -15,9 +14,9 @@ const useHistory = (to, initialPath) => {
     // Sets root entry on history stack
     history.replaceState(...buildStateArgs(initialPath));
 
-    const onPop = (({ state }) => {
+    const onPop = ({ state }) => {
       to(state.path);
-    });
+    };
 
     window.addEventListener('popstate', onPop);
 
@@ -30,9 +29,7 @@ const useHistory = (to, initialPath) => {
 };
 
 const getPage = (routes, path, notFound) =>
-  routes.has(path)
-    ? routes.get(path)
-    : () => notFound;
+  routes.has(path) ? routes.get(path) : () => notFound;
 
 // TODO: injectable history, window etc.
 const useRouting = ({ routes, initialPath, notFound }) => {

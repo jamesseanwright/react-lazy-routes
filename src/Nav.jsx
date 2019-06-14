@@ -1,17 +1,14 @@
 import React from 'react';
 import { Link } from './routing';
 
-const getLinkText = path =>
-  `${path[1].toUpperCase()}${path.slice(2)}`;
+const getLinkText = path => `${path[1].toUpperCase()}${path.slice(2)}`;
 
 const Nav = ({ paths }) => (
   <nav>
     <ul>
       {paths.map((path, i) => (
         <li key={i}>
-          <Link href={path}>
-            {getLinkText(path)}
-          </Link>
+          <Link href={path}>{getLinkText(path)}</Link>
         </li>
       ))}
     </ul>

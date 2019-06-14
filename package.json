@@ -6,6 +6,7 @@
   "scripts": {
     "build": "rollup -c && cp src/index.html dist",
     "dev": "npm run build && static dist",
+    "format": "prettier --write rollup.config.js 'src/**/*.{js,jsx}'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,6 +17,7 @@
     "@babel/plugin-syntax-dynamic-import": "7.2.0",
     "@babel/plugin-transform-react-jsx": "7.3.0",
     "node-static": "0.7.11",
+    "prettier": "1.18.2",
     "rollup": "1.15.1",
     "rollup-plugin-babel": "4.3.2",
     "rollup-plugin-commonjs": "10.0.0",

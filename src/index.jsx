@@ -1,3 +1,5 @@
+// TODO: TESTS!!!
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Nav from './Nav.jsx';
@@ -31,7 +33,4 @@ const App = () => (
   </PageHost>
 );
 
-ReactDOM.render(
-  <App />,
-  document.body.querySelector('#app'),
-);
+ReactDOM.render(<App />, document.body.querySelector('#app'));
