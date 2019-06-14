@@ -12,7 +12,9 @@ export default ({ inlineDynamicImports }) => ({
   },
   inlineDynamicImports,
   plugins: [
-    resolve(),
+    resolve({
+      extensions: ['.js', '.jsx']
+    }),
     commonjs(),
     nodeGlobals(),
     babel({

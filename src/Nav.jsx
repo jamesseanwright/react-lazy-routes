@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from './routing/index.jsx'; // TODO: configure node-resolve
+import { Link } from './routing';
 
 const getLinkText = path =>
   `${path[1].toUpperCase()}${path.slice(2)}`;
