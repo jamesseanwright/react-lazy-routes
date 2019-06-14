@@ -2,31 +2,21 @@ import React from 'react';
 
 const RouterContext = React.createContext();
 
-// TODO: injectable history for tests
-const useHistory = ({ initial, routes, notFound }) => {
-  const initialState = {
-    Page: () => initial,
-    href: '/'
-  };
+const buildStateArgs = href =>
+  [{ href }, null, href];
 
-  const [{ Page }, setState] = React.useState(initialState);
-
-  // TODO: React.useMemo?
-  const to = (href, shouldPush = true) => {
-    const Page = routes.has(href)
-      ? routes.get(href)
-      : () => notFound
-
-    if (shouldPush) {
-      history.pushState({ href }, null, href);
-    }
-
-    setState({ Page, href });
+const useHistory = (to, initialHref) => {
+  const push = href => {
+    to(href);
+    history.pushState(...buildStateArgs(href));
   };
 
   React.useEffect(() => {
+    // Sets root entry on history stack
+    history.replaceState(...buildStateArgs(initialHref));
+
     const onPop = (({ state }) => {
-      to(state.href, false);
+      to(state.href);
     });
 
     window.addEventListener('popstate', onPop);
@@ -36,14 +26,38 @@ const useHistory = ({ initial, routes, notFound }) => {
     };
   }, []);
 
+  return push;
+};
+
+const getPage = (routes, href, notFound) =>
+  routes.has(href)
+    ? routes.get(href)
+    : () => notFound;
+
+// TODO: injectable history, window etc.
+const useRouting = ({ routes, initialHref, notFound }) => {
+  const initialState = {
+    Page: getPage(routes, initialHref, notFound),
+    href: initialHref,
+  };
+
+  const [{ Page }, setState] = React.useState(initialState);
+
+  // TODO: React.useMemo?
+  const to = href => {
+    const Page = getPage(routes, href, notFound);
+    setState({ Page, href });
+  };
+
   return [Page, to];
 };
 
 export const PageHost = props => {
-  const [Page, to] = useHistory(props);
+  const [Page, to] = useRouting(props);
+  const push = useHistory(to, props.initialHref);
 
   return (
-    <RouterContext.Provider value={to}>
+    <RouterContext.Provider value={push}>
       <React.Suspense fallback={props.loading}>
         {props.children(Page)}
       </React.Suspense>
@@ -52,7 +66,7 @@ export const PageHost = props => {
 };
 
 export const Link = ({ href, ...rest }) => {
-  const to = React.useContext(RouterContext);
+  const push = React.useContext(RouterContext);
 
   return (
     <a
@@ -60,7 +74,7 @@ export const Link = ({ href, ...rest }) => {
       href={href}
       onClick={e => {
         e.preventDefault();
-        to(href);
+        push(href);
       }}
     />
   );
