@@ -6,16 +6,16 @@ const getLinkText = path =>
 
 const Nav = ({ paths }) => (
   <nav>
-      <ul>
-        {paths.map((path, i) => (
-          <li key={i}>
-            <Link href={path}>
-              {getLinkText(path)}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <ul>
+      {paths.map((path, i) => (
+        <li key={i}>
+          <Link href={path}>
+            {getLinkText(path)}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </nav>
 );
 
 export default Nav;
