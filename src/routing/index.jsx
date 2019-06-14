@@ -2,22 +2,45 @@ import React from 'react';
 
 const RouterContext = React.createContext();
 
-// TODO: React.useMemo?
-const createTo = (routes, setPage, { notFound }) =>
-  destHref => {
-    // TODO: injectable history for tests
-    // TODO: popstate
-    history.pushState({}, null, destHref);
-
-    setPage(() => routes.has(destHref)
-      ? routes.get(destHref)
-      : () => notFound
-    );
+// TODO: injectable history for tests
+const useHistory = ({ initial, routes, notFound }) => {
+  const initialState = {
+    Page: () => initial,
+    href: '/'
   };
 
+  const [{ Page }, setState] = React.useState(initialState);
+
+  // TODO: React.useMemo?
+  const to = (href, shouldPush = true) => {
+    const Page = routes.has(href)
+      ? routes.get(href)
+      : () => notFound
+
+    if (shouldPush) {
+      history.pushState({ href }, null, href);
+    }
+
+    setState({ Page, href });
+  };
+
+  React.useEffect(() => {
+    const onPop = (({ state }) => {
+      to(state.href, false);
+    });
+
+    window.addEventListener('popstate', onPop);
+
+    return () => {
+      window.removeEventListener('popstate', onPop);
+    };
+  }, []);
+
+  return [Page, to];
+};
+
 export const PageHost = props => {
-  const [Page, setPage] = React.useState(() => () => props.initial);
-  const to = createTo(props.routes, setPage, props);
+  const [Page, to] = useHistory(props);
 
   return (
     <RouterContext.Provider value={to}>
