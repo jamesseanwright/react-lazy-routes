@@ -11,7 +11,8 @@ const useHistory = (to, initialPath) => {
   };
 
   React.useEffect(() => {
-    // Sets root entry on history stack
+    /* Replaces current entry on history 
+     * stack to include expected state */
     history.replaceState(...buildStateArgs(initialPath));
 
     const onPop = ({ state }) => {
