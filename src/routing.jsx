@@ -43,7 +43,7 @@ const useRouting = ({ routes, initialPath, notFound }) => {
 
   const to = path => {
     const Page = getPage(routes, path, notFound);
-    setState({ Page, path });
+    setState({ Page, path }); // TODO: remove path from comp state
   };
 
   return [Page, to];
