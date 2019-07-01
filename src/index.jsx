@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Nav from './Nav.jsx';
-import { PageHost } from './routing';
+import { SuspensefulRouter } from './routing';
 
 const Initial = () => <p>Pick an Ipsum!</p>;
 
@@ -18,10 +18,10 @@ const routes = new Map([
 const paths = [...routes.keys(), '/missing'].slice(1);
 
 const App = () => (
-  <PageHost
+  <SuspensefulRouter
     routes={routes}
     initialPath="/"
-    loading={<p>Loading...</p>}
+    fallback={<p>Loading...</p>}
     notFound={<p>Route not found</p>}
   >
     {Page => (
@@ -30,7 +30,7 @@ const App = () => (
         <Page />
       </>
     )}
-  </PageHost>
+  </SuspensefulRouter>
 );
 
 ReactDOM.render(<App />, document.body.querySelector('#app'));

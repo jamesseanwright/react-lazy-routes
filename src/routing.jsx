@@ -48,13 +48,13 @@ const useRouting = ({ routes, initialPath, notFound }) => {
   return [Page, to];
 };
 
-export const PageHost = props => {
+export const SuspensefulRouter = props => {
   const [Page, to] = useRouting(props);
   const push = useHistory(to, props.initialPath);
 
   return (
     <RouterContext.Provider value={push}>
-      <React.Suspense fallback={props.loading}>
+      <React.Suspense fallback={props.fallback}>
         {props.children(Page)}
       </React.Suspense>
     </RouterContext.Provider>
