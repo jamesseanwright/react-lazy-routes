@@ -1,11 +1,12 @@
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
 import nodeGlobals from 'rollup-plugin-node-globals';
-import babel from 'rollup-plugin-babel';
 import { terser } from 'rollup-plugin-terser';
+import typescriptPlugin from 'rollup-plugin-typescript2';
+import typescript from 'typescript';
 
 export default ({ inlineDynamicImports }) => ({
-  input: 'src/index.jsx',
+  input: 'src/index.tsx',
   output: {
     dir: 'dist',
     format: 'esm',
@@ -13,13 +14,30 @@ export default ({ inlineDynamicImports }) => ({
   inlineDynamicImports,
   plugins: [
     resolve({
-      extensions: ['.js', '.jsx'],
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
     }),
-    commonjs(),
+    commonjs({
+      namedExports: {
+        'node_modules/react-dom/index.js': [
+            'render',
+        ],
+        'node_modules/react/index.js': [
+            'Component',
+            'PropTypes',
+            'Fragment',
+            'Suspense',
+            'createElement',
+            'useEffect',
+            'useState',
+            'useContext',
+            'createContext',
+            'lazy',
+        ],
+      },
+    }),
     nodeGlobals(),
-    babel({
-      exclude: 'node_modules/**',
-      plugins: ['@babel/syntax-dynamic-import', '@babel/transform-react-jsx'],
+    typescriptPlugin({
+      typescript,
     }),
     terser({
       mangle: {
