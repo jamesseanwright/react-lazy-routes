@@ -1,7 +1,6 @@
 import React from 'react';
 
 const RouterContext = React.createContext();
-
 const buildStateArgs = path => [{ path }, null, path];
 
 const useHistory = (to, initialPath) => {
@@ -11,7 +10,7 @@ const useHistory = (to, initialPath) => {
   };
 
   React.useEffect(() => {
-    /* Replaces current entry on history 
+    /* Replaces current entry on history
      * stack to include expected state */
     history.replaceState(...buildStateArgs(initialPath));
 
@@ -34,17 +33,12 @@ const getPage = (routes, path, notFound) =>
 
 // TODO: injectable history, window etc.
 const useRouting = ({ routes, initialPath, notFound }) => {
-  const initialState = {
-    Page: getPage(routes, initialPath, notFound),
-    path: initialPath,
-  };
-
-  // TODO: state to just hold page ref directly
-  const [{ Page }, setState] = React.useState(initialState);
+  const InitialPage = getPage(routes, initialPath, notFound);
+  const [Page, setPage] = React.useState(() => InitialPage);
 
   const to = path => {
     const Page = getPage(routes, path, notFound);
-    setState({ Page, path }); // TODO: remove path from state
+    setPage(() => Page);
   };
 
   return [Page, to];
