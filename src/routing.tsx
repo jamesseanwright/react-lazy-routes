@@ -11,9 +11,9 @@ interface PopEvent {
 interface RouterProps {
   routes: RoutesMap;
   initialPath: string;
-  notFound: React.ReactElement;
-  fallback: React.ReactElement;
-  children(Page: React.ComponentType): React.ReactElement;
+  notFound: NonNullable<React.ReactNode>;
+  fallback: NonNullable<React.ReactNode>;
+  children(Page: React.ComponentType): React.ReactNode;
 }
 
 type To = (path: string) => void;
@@ -57,7 +57,7 @@ const useHistory = (to: To, initialPath: string) => {
 const getPage = (
   routes: RoutesMap,
   path: string,
-  notFound: React.ReactElement,
+  notFound: React.ReactNode,
 ) => routes.get(path) || (() => <>{notFound}</>); // TODO: avoid fragment wrapping?
 
 // TODO: injectable history, window etc.
