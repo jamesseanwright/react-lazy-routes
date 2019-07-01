@@ -2,7 +2,7 @@ import * as React from 'react';
 
 interface HistoryState {
   path: string;
-};
+}
 
 interface PopEvent {
   state: HistoryState;
@@ -23,7 +23,11 @@ type RoutingHook = (props: RouterProps) => [React.ComponentType, To];
 
 const noOp = () => undefined;
 const RouterContext = React.createContext<To>(noOp);
-const buildStateArgs: HistoryStateBuilder = (path: string) => [{ path }, '', path];
+const buildStateArgs: HistoryStateBuilder = (path: string) => [
+  { path },
+  '',
+  path,
+];
 
 const useHistory = (to: To, initialPath: string) => {
   const push = (path: string) => {
@@ -50,13 +54,18 @@ const useHistory = (to: To, initialPath: string) => {
   return push;
 };
 
-const getPage = (routes: RoutesMap, path: string, notFound: React.ReactElement) =>
-  routes.get(path) || (() => <>{notFound}</>); // TODO: avoid fragment wrapping?
+const getPage = (
+  routes: RoutesMap,
+  path: string,
+  notFound: React.ReactElement,
+) => routes.get(path) || (() => <>{notFound}</>); // TODO: avoid fragment wrapping?
 
 // TODO: injectable history, window etc.
 const useRouting: RoutingHook = ({ routes, initialPath, notFound }) => {
   const InitialPage = getPage(routes, initialPath, notFound);
-  const [Page, setPage] = React.useState<React.ComponentType>(() => InitialPage);
+  const [Page, setPage] = React.useState<React.ComponentType>(
+    () => InitialPage,
+  );
 
   const to = (path: string) => {
     const Page = getPage(routes, path, notFound);
@@ -79,7 +88,10 @@ export const SuspensefulRouter: React.FC<RouterProps> = props => {
   );
 };
 
-export const Link: React.FC<React.AnchorHTMLAttributes<HTMLAnchorElement>> = ({ href, ...rest }) => {
+export const Link: React.FC<React.AnchorHTMLAttributes<HTMLAnchorElement>> = ({
+  href,
+  ...rest
+}) => {
   const push = React.useContext(RouterContext);
 
   return (

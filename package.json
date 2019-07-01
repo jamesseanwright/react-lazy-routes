@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rollup -c && cp src/index.html dist",
     "dev": "npm run build && static dist",
-    "format": "prettier --write rollup.config.js 'src/**/*.{js,jsx}'",
+    "format": "prettier --write rollup.config.js 'src/**/*.{ts,tsx}'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

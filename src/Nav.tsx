@@ -1,11 +1,12 @@
-import * as React from 'react';;
+import * as React from 'react';
 import { Link } from './routing';
 
 interface NavProps {
-  paths: string[],
+  paths: string[];
 }
 
-const getLinkText = (path: string) => `${path[1].toUpperCase()}${path.slice(2)}`;
+const getLinkText = (path: string) =>
+  `${path[1].toUpperCase()}${path.slice(2)}`;
 
 const Nav: React.FC<NavProps> = ({ paths }) => (
   <nav>
