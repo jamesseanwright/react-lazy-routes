@@ -9,7 +9,13 @@
     "format": "prettier --write rollup.config.js 'src/**/*.{js,jsx}'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "react",
+    "lazy",
+    "suspense",
+    "esm",
+    "dynamic"
+  ],
   "author": "James Wright <james@jamesswright.co.uk>",
   "license": "ISC",
   "devDependencies": {
