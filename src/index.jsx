@@ -1,4 +1,5 @@
 // TODO: TESTS!!!
+// TODO: Convert to TS for article
 
 import React from 'react';
 import ReactDOM from 'react-dom';

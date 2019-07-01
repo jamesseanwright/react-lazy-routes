@@ -11,7 +11,8 @@ const useHistory = (to, initialPath) => {
   };
 
   React.useEffect(() => {
-    // Sets root entry on history stack
+    /* Replaces current entry on history 
+     * stack to include expected state */
     history.replaceState(...buildStateArgs(initialPath));
 
     const onPop = ({ state }) => {
@@ -38,11 +39,12 @@ const useRouting = ({ routes, initialPath, notFound }) => {
     path: initialPath,
   };
 
+  // TODO: state to just hold page ref directly
   const [{ Page }, setState] = React.useState(initialState);
 
   const to = path => {
     const Page = getPage(routes, path, notFound);
-    setState({ Page, path });
+    setState({ Page, path }); // TODO: remove path from state
   };
 
   return [Page, to];
