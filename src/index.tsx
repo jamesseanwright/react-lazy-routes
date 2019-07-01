@@ -9,10 +9,10 @@ const Initial = () => <p>Pick an Ipsum!</p>;
 
 const routes = new Map<string, React.ComponentType>([
   ['/', Initial],
+  ['/lorem', React.lazy(() => import('./pages/Lorem'))],
   ['/bacon', React.lazy(() => import('./pages/Bacon'))],
   ['/hipster', React.lazy(() => import('./pages/Hipster'))],
-  ['/lorem', React.lazy(() => import('./pages/Lorem'))],
-  ['/trump', React.lazy(() => import('./pages/Trump'))],
+  ['/office', React.lazy(() => import('./pages/Office'))],
 ]);
 
 const paths = [...routes.keys(), '/missing'].slice(1);
