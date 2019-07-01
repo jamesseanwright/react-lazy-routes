@@ -23,6 +23,7 @@ type RoutingHook = (props: RouterProps) => [React.ComponentType, To];
 
 const noOp = () => undefined;
 const RouterContext = React.createContext<To>(noOp);
+
 const buildStateArgs: HistoryStateBuilder = (path: string) => [
   { path },
   '',
