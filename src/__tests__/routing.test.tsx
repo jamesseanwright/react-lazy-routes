@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
+import { act } from 'react-dom/test-utils';
 import { Link, SuspensefulRouter } from '../routing';
 
-// TODO: better naming
-describe('router', () => {
+describe('Router integration tests (mainly <SuspensefulRouter /> and <Link />)', () => {
   const initialPath = '/';
   const secondPath = '/second';
   const InitialPage = () => <p>My page!</p>;
@@ -110,8 +110,53 @@ describe('router', () => {
     expect(rendered.exists('.suspenseful')).toBe(true);
   });
 
-  it.todo(
-    'should transition back through the history stack when popstate is fired',
-  );
-  it.todo('should unsubscribe from popstate when the router unmounts');
+  it('should transition back through the history stack when popstate is fired', () => {
+    const rendered = mount(
+      <SuspensefulRouter {...routerProps}>
+        {Page => (
+          <>
+            <Link href={initialPath} />
+            <Link href={secondPath} />
+            <Page />
+          </>
+        )}
+      </SuspensefulRouter>,
+    );
+
+    const secondLink = rendered.find(Link).at(1);
+
+    secondLink.simulate('click');
+
+    expect(rendered.exists(InitialPage)).toBe(false);
+    expect(rendered.exists(SecondPage)).toBe(true);
+
+    /* Required to execute all hooks
+     * before asserting updates. */
+    act(() => {
+      window.dispatchEvent(new PopStateEvent('popstate', {
+        state: {
+          path: initialPath,
+        }
+      }));
+    });
+
+    rendered.update();
+
+    expect(rendered.exists(InitialPage)).toBe(true);
+    expect(rendered.exists(SecondPage)).toBe(false);
+  });
+
+  it('should unsubscribe from popstate when the router unmounts', () => {
+    const removeEventSpy = jest.spyOn(window, 'removeEventListener');
+
+    const rendered = mount(
+      <SuspensefulRouter {...routerProps}>
+        {Page => <Page />}
+      </SuspensefulRouter>
+    );
+
+    rendered.unmount();
+
+    expect(removeEventSpy).toHaveBeenCalledWith('popstate', expect.any(Function));
+  });
 });

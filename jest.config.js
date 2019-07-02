@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = {
+  clearMocks: true,
   transform: {
     "^.+\\.tsx?$": "ts-jest"
   },
