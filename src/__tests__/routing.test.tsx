@@ -8,12 +8,18 @@ describe('router', () => {
   const secondPath = '/second';
   const InitialPage = () => <p>My page!</p>;
   const SecondPage = () => <p>Second page!</p>;
+
+  const SuspensefulPage = React.lazy(() => Promise.resolve({
+    default: () => <div className="suspenseful" />,
+  }));
+
   const fallback = <p className="fallback">Loading...</p>;
   const notFound = <p className="not-found">Not found :(</p>;
 
   const routes = new Map<string, React.ComponentType>([
     [initialPath, InitialPage],
     [secondPath, SecondPage],
+    ['/suspense', SuspensefulPage],
   ]);
 
   const routerProps = {
@@ -80,7 +86,30 @@ describe('router', () => {
     expect(rendered.exists('.fallback')).toBe(false);
   });
 
-  it.todo('should render the fallback node when a Suspenseful page component is loading or deferred');
+  it('should render the fallback node when a Suspenseful page component is loading or deferred', async () => {
+    const rendered = mount(
+      <SuspensefulRouter
+        {...routerProps}
+        initialPath="/suspense"
+      >
+        {Page => <Page />}
+      </SuspensefulRouter>
+    );
+
+    expect(rendered.exists('.fallback')).toBe(true);
+    expect(rendered.exists('.suspenseful')).toBe(false);
+
+    /* Add a new Promise to the microtask queue
+     * and await for it to resolve after the
+     * Promise passed to React.lazy has resolved.
+     * Force a ReactWrapper update once flushed. */
+    await Promise.resolve();
+    rendered.update();
+
+    expect(rendered.exists('.fallback')).toBe(false);
+    expect(rendered.exists('.suspenseful')).toBe(true);
+  });
+
   it.todo('should transition back through the history stack when popstate is fired');
   it.todo('should unsubscribe from popstate when the router unmounts');
 });
