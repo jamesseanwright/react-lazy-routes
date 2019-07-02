@@ -18,6 +18,7 @@
   "author": "James Wright <james@jamesswright.co.uk>",
   "license": "ISC",
   "devDependencies": {
+    "@types/enzyme": "3.10.1",
     "@types/jest": "24.0.15",
     "@types/react": "16.8.22",
     "@types/react-dom": "16.8.4",
