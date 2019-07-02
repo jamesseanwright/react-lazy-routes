@@ -1,7 +1,7 @@
 {
   "name": "react-lazy-router",
   "version": "1.0.0",
-  "description": "An example router to lazily loading React components with React.lazy and Suspense",
+  "description": "An example router for lazily loading React components with React.lazy and Suspense",
   "scripts": {
     "build": "rollup -c && cp src/index.html dist",
     "dev": "npm run build && static dist",
