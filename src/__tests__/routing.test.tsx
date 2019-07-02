@@ -133,11 +133,13 @@ describe('Router integration tests (mainly <SuspensefulRouter /> and <Link />)',
     /* Required to execute all hooks
      * before asserting updates. */
     act(() => {
-      window.dispatchEvent(new PopStateEvent('popstate', {
-        state: {
-          path: initialPath,
-        }
-      }));
+      window.dispatchEvent(
+        new PopStateEvent('popstate', {
+          state: {
+            path: initialPath,
+          },
+        }),
+      );
     });
 
     rendered.update();
@@ -152,11 +154,14 @@ describe('Router integration tests (mainly <SuspensefulRouter /> and <Link />)',
     const rendered = mount(
       <SuspensefulRouter {...routerProps}>
         {Page => <Page />}
-      </SuspensefulRouter>
+      </SuspensefulRouter>,
     );
 
     rendered.unmount();
 
-    expect(removeEventSpy).toHaveBeenCalledWith('popstate', expect.any(Function));
+    expect(removeEventSpy).toHaveBeenCalledWith(
+      'popstate',
+      expect.any(Function),
+    );
   });
 });
