@@ -9,9 +9,11 @@ describe('router', () => {
   const InitialPage = () => <p>My page!</p>;
   const SecondPage = () => <p>Second page!</p>;
 
-  const SuspensefulPage = React.lazy(() => Promise.resolve({
-    default: () => <div className="suspenseful" />,
-  }));
+  const SuspensefulPage = React.lazy(() =>
+    Promise.resolve({
+      default: () => <div className="suspenseful" />,
+    }),
+  );
 
   const fallback = <p className="fallback">Loading...</p>;
   const notFound = <p className="not-found">Not found :(</p>;
@@ -30,10 +32,11 @@ describe('router', () => {
   };
 
   it('should provide the initial page based by the initial path', () => {
-    const rendered = mount( // useEffect re-renders aren't supported by shallow()
+    const rendered = mount(
+      // useEffect re-renders aren't supported by shallow()
       <SuspensefulRouter {...routerProps}>
         {Page => <Page />}
-      </SuspensefulRouter>
+      </SuspensefulRouter>,
     );
 
     expect(rendered.exists(InitialPage)).toBe(true);
@@ -51,7 +54,7 @@ describe('router', () => {
             <Page />
           </>
         )}
-      </SuspensefulRouter>
+      </SuspensefulRouter>,
     );
 
     const link = rendered.find(Link);
@@ -73,7 +76,7 @@ describe('router', () => {
             <Page />
           </>
         )}
-      </SuspensefulRouter>
+      </SuspensefulRouter>,
     );
 
     const link = rendered.find(Link);
@@ -88,12 +91,9 @@ describe('router', () => {
 
   it('should render the fallback node when a Suspenseful page component is loading or deferred', async () => {
     const rendered = mount(
-      <SuspensefulRouter
-        {...routerProps}
-        initialPath="/suspense"
-      >
+      <SuspensefulRouter {...routerProps} initialPath="/suspense">
         {Page => <Page />}
-      </SuspensefulRouter>
+      </SuspensefulRouter>,
     );
 
     expect(rendered.exists('.fallback')).toBe(true);
@@ -110,6 +110,8 @@ describe('router', () => {
     expect(rendered.exists('.suspenseful')).toBe(true);
   });
 
-  it.todo('should transition back through the history stack when popstate is fired');
+  it.todo(
+    'should transition back through the history stack when popstate is fired',
+  );
   it.todo('should unsubscribe from popstate when the router unmounts');
 });

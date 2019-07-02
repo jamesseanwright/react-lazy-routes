@@ -55,11 +55,8 @@ const useHistory = (to: To, initialPath: string) => {
   return push;
 };
 
-const getPage = (
-  routes: RoutesMap,
-  path: string,
-  notFound: React.ReactNode,
-) => routes.get(path) || (() => <>{notFound}</>); // TODO: avoid fragment wrapping?
+const getPage = (routes: RoutesMap, path: string, notFound: React.ReactNode) =>
+  routes.get(path) || (() => <>{notFound}</>); // TODO: avoid fragment wrapping?
 
 const useRouting: RoutingHook = ({ routes, initialPath, notFound }) => {
   const InitialPage = getPage(routes, initialPath, notFound);
