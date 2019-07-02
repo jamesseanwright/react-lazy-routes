@@ -1,7 +1,7 @@
 {
-  "name": "react-lazy-routes",
+  "name": "react-lazy-router",
   "version": "1.0.0",
-  "description": "jest",
+  "description": "A lazy loading router for React using React.lazy and Suspense",
   "scripts": {
     "build": "rollup -c && cp src/index.html dist",
     "dev": "npm run build && static dist",
