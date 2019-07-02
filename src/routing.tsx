@@ -61,7 +61,6 @@ const getPage = (
   notFound: React.ReactNode,
 ) => routes.get(path) || (() => <>{notFound}</>); // TODO: avoid fragment wrapping?
 
-// TODO: injectable history, window etc.
 const useRouting: RoutingHook = ({ routes, initialPath, notFound }) => {
   const InitialPage = getPage(routes, initialPath, notFound);
   const [Page, setPage] = React.useState<React.ComponentType>(

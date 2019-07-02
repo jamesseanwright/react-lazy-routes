@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Nav should map an array of paths into a list of links, computing the text of each 1`] = `
+<nav>
+  <ul>
+    <li>
+      <a
+        href="/foo"
+        onClick={[Function]}
+      >
+        Foo
+      </a>
+    </li>
+    <li>
+      <a
+        href="/bar"
+        onClick={[Function]}
+      >
+        Bar
+      </a>
+    </li>
+    <li>
+      <a
+        href="/baz"
+        onClick={[Function]}
+      >
+        Baz
+      </a>
+    </li>
+  </ul>
+</nav>
+`;

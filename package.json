@@ -1,13 +1,12 @@
 {
   "name": "react-lazy-routes",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "jest",
   "scripts": {
     "build": "rollup -c && cp src/index.html dist",
     "dev": "npm run build && static dist",
     "format": "prettier --write rollup.config.js 'src/**/*.{ts,tsx}'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [
     "react",
@@ -19,16 +18,23 @@
   "author": "James Wright <james@jamesswright.co.uk>",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "24.0.15",
     "@types/react": "16.8.22",
     "@types/react-dom": "16.8.4",
+    "@types/react-test-renderer": "16.8.2",
+    "enzyme": "3.10.0",
+    "enzyme-adapter-react-16": "1.14.0",
+    "jest": "24.8.0",
     "node-static": "0.7.11",
     "prettier": "1.18.2",
+    "react-test-renderer": "16.8.6",
     "rollup": "1.15.1",
     "rollup-plugin-commonjs": "10.0.0",
     "rollup-plugin-node-globals": "1.4.0",
     "rollup-plugin-node-resolve": "5.0.1",
     "rollup-plugin-terser": "5.0.0",
     "rollup-plugin-typescript2": "0.21.2",
+    "ts-jest": "24.0.2",
     "typescript": "3.5.2"
   },
   "dependencies": {
