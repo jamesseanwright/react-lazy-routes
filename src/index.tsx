@@ -3,10 +3,8 @@ import * as ReactDOM from 'react-dom';
 import Nav from './Nav.jsx';
 import { SuspensefulRouter } from './routing';
 
-const Initial = () => <p>Pick an Ipsum!</p>;
-
 const routes = new Map<string, React.ComponentType>([
-  ['/', Initial],
+  ['/', () => <p>Pick an Ipsum!</p>],
   ['/lorem', React.lazy(() => import('./pages/Lorem'))],
   ['/bacon', React.lazy(() => import('./pages/Bacon'))],
   ['/hipster', React.lazy(() => import('./pages/Hipster'))],

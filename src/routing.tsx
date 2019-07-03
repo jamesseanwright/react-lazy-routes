@@ -56,10 +56,11 @@ const useHistory = (to: To, initialPath: string) => {
 };
 
 const getPage = (routes: RoutesMap, path: string, notFound: React.ReactNode) =>
-  routes.get(path) || (() => <>{notFound}</>); // TODO: avoid fragment wrapping?
+  routes.get(path) || (() => <>{notFound}</>); // React.FC must return ReactElement
 
 const useRouting: RoutingHook = ({ routes, initialPath, notFound }) => {
   const InitialPage = getPage(routes, initialPath, notFound);
+
   const [Page, setPage] = React.useState<React.ComponentType>(
     () => InitialPage,
   );
