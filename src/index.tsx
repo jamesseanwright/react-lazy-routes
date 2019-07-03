@@ -19,13 +19,9 @@ const App = () => (
     initialPath="/"
     fallback={<div className="loading-spinner" />}
     notFound={<p>Route not found</p>}
+    header={<Nav paths={paths} />}
   >
-    {Page => (
-      <>
-        <Nav paths={paths} />
-        <Page />
-      </>
-    )}
+    {Page => <Page />}
   </SuspensefulRouter>
 );
 

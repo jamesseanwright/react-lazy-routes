@@ -47,13 +47,11 @@ describe('Router integration tests (mainly <SuspensefulRouter /> and <Link />)',
 
   it('should transition to another page when push is called', () => {
     const rendered = mount(
-      <SuspensefulRouter {...routerProps}>
-        {Page => (
-          <>
-            <Link href={secondPath} />
-            <Page />
-          </>
-        )}
+      <SuspensefulRouter
+        {...routerProps}
+        header={<Link href={secondPath} />}
+      >
+        {Page => <Page />}
       </SuspensefulRouter>,
     );
 
@@ -69,13 +67,11 @@ describe('Router integration tests (mainly <SuspensefulRouter /> and <Link />)',
 
   it('should render the not found node when a route does not exist', () => {
     const rendered = mount(
-      <SuspensefulRouter {...routerProps}>
-        {Page => (
-          <>
-            <Link href="/missing" />
-            <Page />
-          </>
-        )}
+      <SuspensefulRouter
+        {...routerProps}
+        header={<Link href="/missing" />}
+      >
+        {Page => <Page />}
       </SuspensefulRouter>,
     );
 
@@ -91,7 +87,7 @@ describe('Router integration tests (mainly <SuspensefulRouter /> and <Link />)',
 
   it('should render the fallback node when a Suspenseful page component is loading or deferred', async () => {
     const rendered = mount(
-      <SuspensefulRouter {...routerProps} initialPath="/suspense">
+      <SuspensefulRouter{...routerProps} initialPath="/suspense">
         {Page => <Page />}
       </SuspensefulRouter>,
     );
@@ -112,14 +108,16 @@ describe('Router integration tests (mainly <SuspensefulRouter /> and <Link />)',
 
   it('should transition back through the history stack when popstate is fired', () => {
     const rendered = mount(
-      <SuspensefulRouter {...routerProps}>
-        {Page => (
+      <SuspensefulRouter
+        {...routerProps}
+        header={(
           <>
             <Link href={initialPath} />
             <Link href={secondPath} />
-            <Page />
           </>
         )}
+      >
+        {Page => <Page />}
       </SuspensefulRouter>,
     );
 

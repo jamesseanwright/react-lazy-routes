@@ -13,6 +13,7 @@ interface RouterProps {
   initialPath: string;
   notFound: NonNullable<React.ReactNode>;
   fallback: NonNullable<React.ReactNode>;
+  header?: React.ReactNode;
   children(Page: React.ComponentType): React.ReactNode;
 }
 
@@ -79,6 +80,7 @@ export const SuspensefulRouter: React.FC<RouterProps> = props => {
 
   return (
     <RouterContext.Provider value={push}>
+      {props.header}
       <React.Suspense fallback={props.fallback}>
         {props.children(Page)}
       </React.Suspense>
