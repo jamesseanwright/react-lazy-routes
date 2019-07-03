@@ -4,7 +4,8 @@
   "description": "An example router for lazily loading React components with React.lazy and Suspense",
   "scripts": {
     "build": "rollup -c && cp src/index.html dist",
-    "dev": "npm run build && static dist",
+    "start": "static -H '{\"Cache-Control\": \"no-cache, must-revalidate\"}' dist",
+    "dev": "npm run build && npm start",
     "format": "prettier --write rollup.config.js 'src/**/*.{ts,tsx}'",
     "test": "jest"
   },
