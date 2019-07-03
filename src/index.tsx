@@ -17,7 +17,7 @@ const App = () => (
   <SuspensefulRouter
     routes={routes}
     initialPath="/"
-    fallback={<p>Loading...</p>}
+    fallback={<div className="loading-spinner" />}
     notFound={<p>Route not found</p>}
   >
     {Page => (
@@ -29,4 +29,4 @@ const App = () => (
   </SuspensefulRouter>
 );
 
-ReactDOM.render(<App />, document.body.querySelector('#app'));
+ReactDOM.render(<App />, document.body.querySelector('.app'));
