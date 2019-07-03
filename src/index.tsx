@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Nav from './Nav.jsx';
-import { SuspensefulRouter } from './routing';
+import { Router } from './routing';
 
 const routes = new Map<string, React.ComponentType>([
   ['/', () => <p>Pick an Ipsum!</p>],
@@ -14,15 +14,20 @@ const routes = new Map<string, React.ComponentType>([
 const paths = [...routes.keys(), '/missing'].slice(1);
 
 const App = () => (
-  <SuspensefulRouter
+  <Router
     routes={routes}
     initialPath="/"
-    fallback={<div className="loading-spinner" />}
     notFound={<p>Route not found</p>}
-    header={<Nav paths={paths} />}
   >
-    {Page => <Page />}
-  </SuspensefulRouter>
+    {Page => (
+      <>
+        <Nav paths={paths} />
+        <React.Suspense fallback={<div className="loading-spinner" />}>
+          <Page />
+        </React.Suspense>
+      </>
+    )}
+  </Router>
 );
 
 ReactDOM.render(<App />, document.body.querySelector('.app'));

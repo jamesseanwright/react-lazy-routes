@@ -12,8 +12,6 @@ interface RouterProps {
   routes: RoutesMap;
   initialPath: string;
   notFound: NonNullable<React.ReactNode>;
-  fallback: NonNullable<React.ReactNode>;
-  header?: React.ReactNode;
   children(Page: React.ComponentType): React.ReactNode;
 }
 
@@ -74,16 +72,13 @@ const useRouting: RoutingHook = ({ routes, initialPath, notFound }) => {
   return [Page, to];
 };
 
-export const SuspensefulRouter: React.FC<RouterProps> = props => {
+export const Router: React.FC<RouterProps> = props => {
   const [Page, to] = useRouting(props);
   const push = useHistory(to, props.initialPath);
 
   return (
     <RouterContext.Provider value={push}>
-      {props.header}
-      <React.Suspense fallback={props.fallback}>
-        {props.children(Page)}
-      </React.Suspense>
+      {props.children(Page)}
     </RouterContext.Provider>
   );
 };

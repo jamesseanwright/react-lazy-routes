@@ -1,9 +1,9 @@
 {
-  "name": "react-lazy-router",
+  "name": "react-lazy-routes",
   "version": "1.0.0",
-  "description": "An example router for lazily loading React components with React.lazy and Suspense",
+  "description": "An example React router implementation and demo of lazily loading components with React.lazy and Suspense",
   "scripts": {
-    "build": "rollup -c && cp src/index.{html,css} dist",
+    "build": "rollup -c && bash -c 'cp src/index.{html,css} dist'",
     "start": "static -H '{\"Cache-Control\": \"no-cache, must-revalidate\"}' dist",
     "dev": "npm run build && npm start",
     "format": "prettier --write rollup.config.js 'src/**/*.{ts,tsx}'",
