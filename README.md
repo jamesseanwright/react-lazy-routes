@@ -22,11 +22,7 @@ const routes = new Map<string, React.ComponentType>([
 const paths = [...routes.keys(), '/missing'].slice(1);
 
 const App = () => (
-  <Router
-    routes={routes}
-    initialPath="/"
-    notFound={<p>Route not found</p>}
-  >
+  <Router routes={routes} initialPath="/" notFound={<p>Route not found</p>}>
     {Page => (
       <>
         <Nav paths={paths} />

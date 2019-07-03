@@ -24,9 +24,7 @@ describe('Router integration tests (mainly <Router /> and <Link />)', () => {
   it('should provide the initial page based by the initial path', () => {
     const rendered = mount(
       // useEffect re-renders aren't supported by shallow()
-      <Router {...routerProps}>
-        {Page => <Page />}
-      </Router>,
+      <Router {...routerProps}>{Page => <Page />}</Router>,
     );
 
     expect(rendered.exists(InitialPage)).toBe(true);
@@ -36,9 +34,7 @@ describe('Router integration tests (mainly <Router /> and <Link />)', () => {
 
   it('should transition to another page when push is called', () => {
     const rendered = mount(
-      <Router
-        {...routerProps}
-      >
+      <Router {...routerProps}>
         {Page => (
           <>
             <Link href={secondPath} />
@@ -59,9 +55,7 @@ describe('Router integration tests (mainly <Router /> and <Link />)', () => {
 
   it('should render the not found node when a route does not exist', () => {
     const rendered = mount(
-      <Router
-        {...routerProps}
-      >
+      <Router {...routerProps}>
         {Page => (
           <>
             <Link href="/missing" />
@@ -82,9 +76,7 @@ describe('Router integration tests (mainly <Router /> and <Link />)', () => {
 
   it('should transition back through the history stack when popstate is fired', () => {
     const rendered = mount(
-      <Router
-        {...routerProps}
-      >
+      <Router {...routerProps}>
         {Page => (
           <>
             <Link href={initialPath} />
@@ -124,9 +116,7 @@ describe('Router integration tests (mainly <Router /> and <Link />)', () => {
     const removeEventSpy = jest.spyOn(window, 'removeEventListener');
 
     const rendered = mount(
-      <Router {...routerProps}>
-        {Page => <Page />}
-      </Router>,
+      <Router {...routerProps}>{Page => <Page />}</Router>,
     );
 
     rendered.unmount();
