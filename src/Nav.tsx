@@ -11,8 +11,8 @@ const getLinkText = (path: string) =>
 const Nav: React.FC<NavProps> = ({ paths }) => (
   <nav>
     <ul>
-      {paths.map((path, i) => (
-        <li key={i}>
+      {paths.map(path => (
+        <li key={path}>
           <Link href={path}>{getLinkText(path)}</Link>
         </li>
       ))}
